@@ -1,9 +1,9 @@
 # LexRAG — Legal Document Intelligence
 
-> Semantic search and natural language Q&A over legal and trademark documents,  
+> Semantic search and natural language Q&A over legal and trademark documents,
 > powered by RAG (Retrieval-Augmented Generation), sentence-transformers, ChromaDB, and Flask.
 
-![LexRAG UI](docs/preview.png)
+<!-- ![LexRAG UI](docs/preview.png) -->
 
 ---
 
@@ -11,7 +11,7 @@
 
 LexRAG is a production-ready RAG pipeline designed for legal and intellectual property documents. It allows users to ingest unstructured legal text, index it as vector embeddings, and query it using natural language — returning semantically relevant answers with source attribution.
 
-**Why this matters for legal IP search:**  
+**Why this matters for legal IP search:**
 Traditional keyword search fails when users ask questions like *"What is the standard for trademark confusion?"* — the answer may live across multiple documents using different terminology. Semantic search solves this by understanding meaning, not just words. This is the same principle behind modern legal discovery tools and platforms like Trademarkia.
 
 ---
@@ -254,16 +254,16 @@ Health check — returns ChromaDB status and total chunks indexed.
 
 ## Design Decisions
 
-**Why sentence-transformers instead of OpenAI embeddings?**  
+**Why sentence-transformers instead of OpenAI embeddings?**
 No API key or cost required. `all-MiniLM-L6-v2` is a well-benchmarked model that performs strongly on semantic similarity tasks, making it a practical choice for production environments with budget constraints.
 
-**Why ChromaDB instead of Qdrant or Pinecone?**  
+**Why ChromaDB instead of Qdrant or Pinecone?**
 ChromaDB runs entirely in-process with persistent local storage — ideal for a focused demo. The architecture is designed so the vector store can be swapped: replacing `rag_service.py`'s ChromaDB calls with a Qdrant client requires minimal changes.
 
-**Why Flask instead of FastAPI?**  
+**Why Flask instead of FastAPI?**
 Flask is explicitly listed in the target job requirements. FastAPI would be a natural evolution for async workloads.
 
-**Chunk size 512 / overlap 64 — why?**  
+**Chunk size 512 / overlap 64 — why?**
 Legal text is dense. 512 tokens preserves enough sentence context for meaningful embeddings. 64-token overlap ensures retrieval doesn't miss answers that straddle chunk boundaries.
 
 ---
@@ -280,5 +280,5 @@ Legal text is dense. 512 tokens preserves enough sentence context for meaningful
 
 ## Author
 
-**Joshua Núñez Arcila** — Full-Stack & AI Engineer  
+**Joshua Núñez Arcila** — Full-Stack & AI Engineer
 [linkedin.com/in/joshuanunezarcila](https://linkedin.com/in/joshuanunezarcila) · [github.com/jonuar](https://github.com/jonuar)
