@@ -28,8 +28,8 @@ Traditional keyword search fails when users ask questions like *"What is the sta
 ┌─────────────────────────────────────────────────────────┐
 │                    Flask REST API                       │
 │                                                         │
-│   POST /api/ingest   →  chunk → embed → store          │
-│   POST /api/query    →  embed → search → synthesize    │
+│   POST /api/ingest   →  chunk → embed → store           │
+│   POST /api/query    →  embed → search → synthesize     │
 │   GET  /api/documents                                   │
 │   GET  /api/health                                      │
 └────────────────────────┬────────────────────────────────┘
@@ -37,10 +37,10 @@ Traditional keyword search fails when users ask questions like *"What is the sta
           ┌──────────────┴──────────────┐
           ▼                             ▼
 ┌──────────────────┐        ┌──────────────────────────┐
-│  sentence-        │        │       ChromaDB           │
-│  transformers     │        │  (persistent vector      │
-│  all-MiniLM-L6-v2 │        │   store · cosine sim)    │
-│  (free, local)    │        │                          │
+│  sentence-       │        │       ChromaDB           │
+│  transformers    │        │  (persistent vector      │
+│  all-MiniLM-L6-v2│        │   store · cosine sim)    │
+│  (free, local)   │        │                          │
 └──────────────────┘        └──────────────────────────┘
 ```
 
@@ -252,22 +252,6 @@ Health check — returns ChromaDB status and total chunks indexed.
 
 ---
 
-## Design Decisions
-
-**Why sentence-transformers instead of OpenAI embeddings?**
-No API key or cost required. `all-MiniLM-L6-v2` is a well-benchmarked model that performs strongly on semantic similarity tasks, making it a practical choice for production environments with budget constraints.
-
-**Why ChromaDB instead of Qdrant or Pinecone?**
-ChromaDB runs entirely in-process with persistent local storage — ideal for a focused demo. The architecture is designed so the vector store can be swapped: replacing `rag_service.py`'s ChromaDB calls with a Qdrant client requires minimal changes.
-
-**Why Flask instead of FastAPI?**
-Flask is explicitly listed in the target job requirements. FastAPI would be a natural evolution for async workloads.
-
-**Chunk size 512 / overlap 64 — why?**
-Legal text is dense. 512 tokens preserves enough sentence context for meaningful embeddings. 64-token overlap ensures retrieval doesn't miss answers that straddle chunk boundaries.
-
----
-
 ## Roadmap
 
 - [ ] Replace extractive synthesis with an LLM call (Ollama / OpenAI) for generative answers
@@ -276,9 +260,3 @@ Legal text is dense. 512 tokens preserves enough sentence context for meaningful
 - [ ] Add SageMaker-based reranking pipeline
 - [ ] Streaming responses via SSE
 
----
-
-## Author
-
-**Joshua Núñez Arcila** — Full-Stack & AI Engineer
-[linkedin.com/in/joshuanunezarcila](https://linkedin.com/in/joshuanunezarcila) · [github.com/jonuar](https://github.com/jonuar)
