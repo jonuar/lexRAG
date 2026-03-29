@@ -38,12 +38,12 @@ Traditional keyword search fails when users ask questions like *"What is the sta
                          │
           ┌──────────────┴──────────────┐
           ▼                             ▼
-┌──────────────────┐        ┌──────────────────────────┐
-│  sentence-       │        │       ChromaDB           │
-│  transformers    │        │  (persistent vector      │
-│  all-MiniLM-L6-v2│        │   store · cosine sim)    │
-│  (free, local)   │        │                          │
-└──────────────────┘        └──────────────────────────┘
+┌───────────────────┐        ┌──────────────────────────┐
+│  sentence-        │        │       ChromaDB           │
+│  transformers     │        │  (persistent vector      │
+│  all-MiniLM-L6-v2 │        │   store · cosine sim)    │
+│  (free, local)    │        │                          │
+└───────────────────┘        └──────────────────────────┘
 ```
 
 ### RAG Pipeline — Step by Step
@@ -231,36 +231,10 @@ Health check — returns ChromaDB status and total chunks indexed.
 
 ---
 
-## Deployment
-
-### Backend → Render
-
-1. Push to GitHub
-2. Go to [render.com](https://render.com) → New → Web Service
-3. Select your repo, use `./backend` as root directory
-4. Choose **Docker** as runtime
-5. Add a **Disk** mount at `/app/chroma_store` (1GB free tier)
-6. Deploy — Render auto-reads `render.yaml`
-
-### Frontend → Vercel
-
-1. Go to [vercel.com](https://vercel.com) → New Project → Import your repo
-2. Set root directory to `frontend`
-3. Add environment variable:
-   ```
-   NEXT_PUBLIC_API_URL = https://your-lexrag-backend.onrender.com
-   ```
-4. Deploy
-
----
-
 ## Design Decisions
 
 **Why sentence-transformers instead of OpenAI embeddings?**  
 No API key or cost required. `all-MiniLM-L6-v2` is a well-benchmarked model that performs strongly on semantic similarity tasks, making it a practical choice for production environments with budget constraints.
-
-**Why ChromaDB instead of Qdrant or Pinecone?**  
-ChromaDB runs entirely in-process with persistent local storage — ideal for a focused demo. The architecture is designed so the vector store can be swapped: replacing `rag_service.py`'s ChromaDB calls with a Qdrant client requires minimal changes.
 
 **Chunk size 512 / overlap 64 — why?**  
 Legal text is dense. 512 tokens preserves enough sentence context for meaningful embeddings. 64-token overlap ensures retrieval doesn't miss answers that straddle chunk boundaries.
