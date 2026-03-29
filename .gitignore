@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.env
+chroma_store/
+
+# Node
+node_modules/
+.next/
+.env.local
+.env.production
+
+# Docker
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
